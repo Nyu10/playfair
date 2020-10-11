@@ -1,12 +1,29 @@
 public class Main{
     public static void main(String[]args){
-	String Input = "WHITEHAT PLAYFIREXMBCDGHKNOQSTUVWZ";
-	String message =Input.substring(0,Input.indexOf(' '));
+	String Input = "encode WHITEHAT PLAYFIREXMBCDGHKNOQSTUVWZ";
+	//encode or decode?
+	String EorD =Input.substring(0,6);
+	//original message
+	String message=Input.substring(7,Input.substring(7).indexOf(" ")+7);
+	//add x to message
 	String ciphertext=addX(message);
-	String key = Input.substring(Input.indexOf(' ')+1);
+	//playfair key
+	String key = Input.substring(EorD.length()+2+message.length());
+	//playfair key in Two-Dimensional Array
 	String [][] dataStructure = makeStructure(key);
+	if (EorD.equals("encode")){
+		String answer = encode(ciphertext,datastructure);
+	}
+	else {
+		String answer = decode(ciphertext,dataStructure);
+	}
+	System.out.println(EorD+"d Text"+answer);
     }
-	
+	public String encode(String ciphertext, String [][] datastructure){
+		for (int i=0;i<ciphertext.length();i+=2){
+			String indices = returnIndices(ciphertext.substring(i,i+2);
+		}
+	}
 	public static String addX(String message){
 		for (int i=0;i<message.length()-1;i+=2){
 			String pair = message.substring(i,i+2);
@@ -77,7 +94,7 @@ public class Main{
 		newLetterPair+=key[Integer.parseInt(indices.substring(2,3))][Integer.parseInt(indices.substring(3,4))];
 		return newLetterPair;
 	}
-	public String verticalEncode(String letterPair,String [][]key){
+	public String horizontalEncode(String letterPair,String [][]key){
 		String indices= returnIndices(letterPair,key);
 		String newLetterPair = "";
 		//checking for edge case
@@ -85,36 +102,30 @@ public class Main{
 			indices=indices.substring(0,1)+"0"+indices.substring(2);
 		}
 		else{//making column index shift one
-			indices=indices.substring(0,1)+(Integer.parseInt(indices.substring(1,2))+1+"")+indices.substring(2);
+			indices=indices.substring(0,1)+(Integer.parseInt(indices.substring(1,2))+1)+indices.substring(2);
 		}
-		if (indices.substring(4).equals("4")){
-			indices=indices.substring(0,4)+"0";
+		if (indices.substring(3).equals("4")){
+			indices=indices.substring(0,3)+"0";
 		}
 		else{
-			indices=indices.substring(0,4)+(Integer.parseInt(indices.substring(4))+1+"");
+			indices=indices.substring(0,3)+(Integer.parseInt(indices.substring(3))+1);
 		}
 		newLetterPair+=key[Integer.parseInt(indices.substring(0,1))][Integer.parseInt(indices.substring(1,2))];
 		newLetterPair+=key[Integer.parseInt(indices.substring(2,3))][Integer.parseInt(indices.substring(3,4))];
 		return newLetterPair;
 	}
-	public String horizontalEncode(String letterPair,String [][]key){
+	public String regularEncode(String letterPair,String [][]key){
 		String indices= returnIndices(letterPair,key);
 		String newLetterPair = "";
-		//checking for edge case
-		if (indices.substring(0,1).equals("4")){
-			indices="0"+indices.substring(1);
-		}
-		else{//making column index shift one
-			indices=indices.substring(0,1)+(Integer.parseInt(indices.substring(1,2))+1+"")+indices.substring(2);
-		}
-		if (indices.substring(3,4).equals("4")){
-			indices=indices.substring(0,4)+"0";
-		}
-		else{
-			indices=indices.substring(0,4)+(Integer.parseInt(indices.substring(4))+1+"");
-		}
-		newLetterPair+=key[Integer.parseInt(indices.substring(0,1))][Integer.parseInt(indices.substring(1,2))];
-		newLetterPair+=key[Integer.parseInt(indices.substring(2,3))][Integer.parseInt(indices.substring(3,4))];
+		int r1=Integer.parseInt(indices.substring(0,1));
+		int c1=Integer.parseInt(indices.substring(1,2));
+		int r2=Integer.parseInt(indices.substring(2,3));
+		int c2=Integer.parseInt(indices.substring(3));
+		int temp=c1;
+		c1=c2;
+		c2=temp;
+		newLetterPair+=key[r1][c1];
+		newLetterPair+=key[r2][c2];
 		return newLetterPair;
 	}
 }
