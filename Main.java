@@ -1,6 +1,6 @@
 public class Main{
 	public static void main(String[]args){
-		String Input = "encode TODAYISAGOODDAYTODIE OZAKDIREXMBCVGHYNPQSTUFWL";
+		String Input = "decode YDQEQGASQGDKVTMKLDQEVTDKVT PLAYFIREXMBCDGHKNOQSTUVWZ";
 		//encode or decode?
 		String EorD =Input.substring(0,6);
 		//original message
@@ -38,8 +38,23 @@ public class Main{
 		}
 		return answer;
 	}
-	public static String decode(String ciphertext, String [][]datastructure){
-		return "not done yet";
+	public static String decode(String ciphertext, String [][]dataStructure){
+		String answer="";
+		for (int i=0;i<ciphertext.length();i+=2){
+			String indices = returnIndices(ciphertext.substring(i,i+2),dataStructure);
+			//Vertical, Horitzontal, Regular
+			String VHorR = analyze(indices);
+			if (VHorR.equals("vertical")){
+				answer+=verticalDecode(ciphertext.substring(i,i+2),dataStructure);
+			}
+			else if (VHorR.equals("horizontal")){
+				answer+=horizontalDecode(ciphertext.substring(i,i+2),dataStructure);
+			}
+			else if (VHorR.equals("regular")){
+				answer+=regularEncode(ciphertext.substring(i,i+2),dataStructure);
+			}
+		}
+		return answer;
 	}
 	//adds X's
 	public static String addX(String message){
@@ -148,7 +163,47 @@ public class Main{
 		newLetterPair+=key[r1][c2];
 		newLetterPair+=key[r2][c1];
 		return newLetterPair;
-		
+	}
+	public static String verticalDecode(String letterPair,String [][]key){
+		String indices= returnIndices(letterPair,key);
+		String newLetterPair = "";
+		//checking for edge case if its in the first column
+		if (indices.substring(1,2).equals("0")){
+			indices=indices.substring(0,1)+"4"+indices.substring(2);
+		}
+		else{//making column index shift one to the left
+			indices=indices.substring(0,1)+(Integer.parseInt(indices.substring(1,2))-1+"")+indices.substring(2);
+		}
+		//same thing but for second letter
+		if (indices.substring(3).equals("0")){
+			indices=indices.substring(0,3)+"4";
+		}
+		else{
+			indices=indices.substring(0,3)+(Integer.parseInt(indices.substring(3))-1+"");
+		}
+		newLetterPair+=key[Integer.parseInt(indices.substring(0,1))][Integer.parseInt(indices.substring(1,2))];
+		newLetterPair+=key[Integer.parseInt(indices.substring(2,3))][Integer.parseInt(indices.substring(3,4))];
+		return newLetterPair;
+	}
+	public static String horizontalDecode(String letterPair,String [][]key){
+		String indices= returnIndices(letterPair,key);
+		String newLetterPair = "";
+		//checking for edge case if it is first row
+		if (indices.substring(0,1).equals("0")){
+			indices="4"+indices.substring(1);
+		}
+		else{//making row index shift one up
+			indices=(Integer.parseInt(indices.substring(0,1))-1)+indices.substring(1);
+		}
+		if (indices.substring(2,3).equals("0")){
+			indices=indices.substring(0,2)+"4"+indices.substring(3);
+		}
+		else{
+			indices=indices.substring(0,2)+(Integer.parseInt(indices.substring(2,3))-1)+indices.substring(3);
+		}
+		newLetterPair+=key[Integer.parseInt(indices.substring(0,1))][Integer.parseInt(indices.substring(1,2))];
+		newLetterPair+=key[Integer.parseInt(indices.substring(2,3))][Integer.parseInt(indices.substring(3,4))];
+		return newLetterPair;
 	}
 }
 	
