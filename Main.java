@@ -1,14 +1,16 @@
+import java.util.Scanner;  // Import the Scanner class
+
 public class Main{
 	public static void main(String[]args){
-		String Input = "decode YDQEQGASQGDKVTMKLDQEVTDKVT PLAYFIREXMBCDGHKNOQSTUVWZ";
+		Scanner in =new Scanner(System.in);
 		//encode or decode?
-		String EorD =Input.substring(0,6);
+		String EorD =args[0];
 		//original message
-		String message=Input.substring(7,Input.substring(7).indexOf(" ")+7);
+		String message=args[1];
 		//add x to message
 		String ciphertext=addX(message);
 		//playfair key
-		String key = Input.substring(EorD.length()+2+message.length());
+		String key = args[2];
 		//playfair key in Two-Dimensional Array
 		String [][] dataStructure = makeStructure(key);
 		String answer="";
