@@ -8,7 +8,7 @@ public class Main{
 		//original message
 		String message=args[1];
 		//add x to message
-		String ciphertext=addX(message);
+		String ciphertext=addX(message).toUpperCase();
 		//playfair key
 		String key = args[2];
 		//playfair key in Two-Dimensional Array
@@ -58,8 +58,13 @@ public class Main{
 		}
 		return answer;
 	}
-	//adds X's
+	//Changes J to I adds X's, add Z
 	public static String addX(String message){
+		for (int i=0;i<message.length()-1;i+=1){
+			if (message.substring(i,i+1).equals("J")){
+				message= message.substring(0,i) + "I"+message.substring(i+1);
+			}
+		}
 		for (int i=0;i<message.length()-1;i+=2){
 			String pair = message.substring(i,i+2);
 			if (pair.substring(0,1).equals(pair.substring(1))){
@@ -67,7 +72,7 @@ public class Main{
 			}
 		}
 		if (message.length()%2!=0){
-			message+="X";
+			message+="Z";
 		}
 		return message;
 	}
