@@ -2,7 +2,6 @@ import java.util.Scanner;  // Import the Scanner class
 
 public class Main{
 	public static void main(String[]args){
-		Scanner in =new Scanner(System.in);
 		//encode or decode?
 		String EorD =args[0];
 		//original message
